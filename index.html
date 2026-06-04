@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>來台灣讀書的外籍學生</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Microsoft JhengHei", Arial, sans-serif;
+    background: linear-gradient(135deg, #dbeafe, #fef3c7);
+    color: #1f2937;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .card {
+    width: 100%;
+    max-width: 820px;
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 24px;
+    padding: 36px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.15);
+  }
+  .tag {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 14px;
+  }
+  h1 {
+    margin: 0 0 14px;
+    font-size: 34px;
+    color: #1e3a8a;
+  }
+  p {
+    font-size: 20px;
+    line-height: 1.9;
+    margin: 18px 0;
+  }
+  .choices {
+    margin-top: 28px;
+  }
+  button {
+    width: 100%;
+    border: none;
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin: 10px 0;
+    background: #2563eb;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #1d4ed8;
+  }
+  .second {
+    background: #f59e0b;
+  }
+  .second:hover {
+    background: #d97706;
+  }
+  .restart {
+    background: #6b7280;
+  }
+  .restart:hover {
+    background: #4b5563;
+  }
+  .footer {
+    margin-top: 22px;
+    font-size: 14px;
+    color: #6b7280;
+    text-align: center;
+  }
+  .ending {
+    font-weight: bold;
+    color: #dc2626;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="tag">期末學習故事</div>
+    <h1 id="title">來台灣讀書的外籍學生</h1>
+    <div id="content"></div>
+    <div class="choices" id="choices"></div>
+    <div class="footer">作者：外籍學生學習故事</div>
+  </div>
+
+<script>
+const story = {
+  start: {
+    title: "來台灣讀書的外籍學生",
+    text: "歡迎來到我的故事！在這個故事中，你將扮演一位剛來台灣讀書的外籍學生，體驗學習中文、交朋友和適應台灣文化的過程。",
+    choices: [
+      ["開始遊戲", "arrive", ""]
+    ]
+  },
+  arrive: {
+    title: "第一關：第一天到台灣",
+    text: "你剛下飛機，來到台灣。這裡的天氣、食物和語言都跟越南不太一樣。你現在最想做什麼？",
+    choices: [
+      ["先去宿舍報到", "dorm", ""],
+      ["去附近走走，認識環境", "explore", "second"]
+    ]
+  },
+  dorm: {
+    title: "宿舍生活",
+    text: "你到宿舍整理行李，也認識了室友。室友告訴你明天有新生說明會。",
+    choices: [
+      ["參加新生說明會", "orientation", ""],
+      ["覺得太累，不想參加", "miss_orientation", "second"]
+    ]
+  },
+  explore: {
+    title: "認識環境",
+    text: "你去學校附近走走，看到便利商店、餐廳和公車站。你覺得台灣生活很方便，但還是有點緊張。",
+    choices: [
+      ["回宿舍休息", "dorm", ""]
+    ]
+  },
+  orientation: {
+    title: "第二關：新生說明會",
+    text: "你參加新生說明會，知道選課、上課時間和學校規定。你也認識了一些同學。",
+    choices: [
+      ["主動跟同學聊天", "friend", ""],
+      ["不好意思說話", "shy", "second"]
+    ]
+  },
+  miss_orientation: {
+    title: "錯過說明會",
+    text: "因為沒有參加說明會，你不太清楚學校的規定，也不知道去哪裡上課。",
+    choices: [
+      ["主動問同學", "friend", ""],
+      ["自己慢慢找", "hard_start", "second"]
+    ]
+  },
+  friend: {
+    title: "交朋友",
+    text: "你鼓起勇氣跟同學聊天。同學很親切，告訴你很多學校生活的事情。你開始覺得沒那麼害怕了。",
+    choices: [
+      ["進入開學第一天", "class", ""]
+    ]
+  },
+  shy: {
+    title: "不好意思說話",
+    text: "你坐在旁邊，不太敢開口。雖然聽到很多資訊，但你還是覺得有點孤單。",
+    choices: [
+      ["進入開學第一天", "class", ""]
+    ]
+  },
+  hard_start: {
+    title: "辛苦的開始",
+    text: "你自己找教室，花了很多時間。你開始明白，來到新的環境，主動問人很重要。",
+    choices: [
+      ["進入開學第一天", "class", ""]
+    ]
+  },
+  class: {
+    title: "第三關：開學第一天",
+    text: "老師上課講得很快，有些內容你聽不懂。這時候你會怎麼做？",
+    choices: [
+      ["下課後問老師和同學", "ask_help", ""],
+      ["不敢問，回家自己查", "self_study", "second"]
+    ]
+  },
+  ask_help: {
+    title: "主動求助",
+    text: "老師和同學都很願意幫你。你慢慢了解課程內容，中文也越來越進步。",
+    choices: [
+      ["參加學校文化活動", "culture", ""]
+    ]
+  },
+  self_study: {
+    title: "自己努力",
+    text: "你回家查資料，也用翻譯軟體幫助自己。雖然比較辛苦，但你沒有放棄。",
+    choices: [
+      ["參加學校文化活動", "culture", ""],
+      ["覺得太累，不想參加活動", "stay_room", "second"]
+    ]
+  },
+  culture: {
+    title: "第四關：台灣文化活動",
+    text: "學校舉辦文化活動，有夜市介紹、台灣小吃和社團表演。你要參加嗎？",
+    choices: [
+      ["參加活動，認識台灣文化", "best_end", ""],
+      ["只去一下就回宿舍", "normal_end", "second"]
+    ]
+  },
+  stay_room: {
+    title: "留在宿舍",
+    text: "你常常留在宿舍，很少和別人交流。生活雖然安靜，但你還是覺得很孤單。",
+    choices: [
+      ["看結局", "challenge_end", ""]
+    ]
+  },
+  best_end: {
+    title: "結局 A：最佳結局",
+    text: "恭喜你！你勇敢面對困難，主動學習中文，也積極參加活動。最後你成功適應台灣生活，交到很多朋友，也留下美好的回憶。<br><br><span class='ending'>【最佳結局】</span>",
+    choices: [
+      ["重新開始", "start", "restart"]
+    ]
+  },
+  normal_end: {
+    title: "結局 B：普通結局",
+    text: "你順利完成學業，也慢慢習慣台灣生活。雖然你沒有參加很多活動，但還是學到了很多經驗。<br><br><span class='ending'>【普通結局】</span>",
+    choices: [
+      ["重新開始", "start", "restart"]
+    ]
+  },
+  challenge_end: {
+    title: "結局 C：挑戰結局",
+    text: "因為你比較少跟別人交流，所以適應台灣生活比較慢。不過你也明白了：在新的環境中，要勇敢開口，才會有更多機會。<br><br><span class='ending'>【挑戰結局】</span>",
+    choices: [
+      ["重新開始", "start", "restart"]
+    ]
+  }
+};
+
+function go(key) {
+  const page = story[key];
+  document.getElementById("title").innerHTML = page.title;
+  document.getElementById("content").innerHTML = "<p>" + page.text + "</p>";
+  const choices = document.getElementById("choices");
+  choices.innerHTML = "";
+  page.choices.forEach(c => {
+    const btn = document.createElement("button");
+    btn.textContent = c[0];
+    if (c[2]) btn.className = c[2];
+    btn.onclick = () => go(c[1]);
+    choices.appendChild(btn);
+  });
+}
+
+go("start");
+</script>
+</body>
+</html>
